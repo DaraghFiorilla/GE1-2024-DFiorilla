@@ -45,20 +45,20 @@ material_override = ExtResource("1_ljfv3")
 mesh = SubResource("PlaneMesh_00q4b")
 skeleton = NodePath("../..")
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+[node name="Player Character" type="CharacterBody3D" parent="."]
 script = ExtResource("3_1hidi")
 
-[node name="player" type="MeshInstance3D" parent="CharacterBody3D"]
+[node name="player" type="MeshInstance3D" parent="Player Character"]
 transform = Transform3D(0.651913, 0, -0.758294, 0, 1, 0, 0.758294, 0, 0.651913, 0, 0.5, 0)
 material_override = ExtResource("2_cp1av")
 mesh = SubResource("BoxMesh_dedr2")
 skeleton = NodePath("../..")
 
-[node name="turret" type="MeshInstance3D" parent="CharacterBody3D/player"]
+[node name="turret" type="MeshInstance3D" parent="Player Character/player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, -0.5)
 material_override = ExtResource("2_cp1av")
 mesh = SubResource("BoxMesh_s2r86")
 skeleton = NodePath("../../..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player Character"]
 shape = SubResource("BoxShape3D_0uvb0")
