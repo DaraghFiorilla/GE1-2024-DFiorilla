@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://cmw50nkjqecuy"]
+
+[ext_resource type="Script" path="res://SpawnNodes.gd" id="1_ae2ss"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_yu0nn"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_a0no5"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_rm3mq"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_b5rly"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="PlaneNode" type="Node3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+
+[node name="PlaneMesh" type="MeshInstance3D" parent="PlaneNode"]
+transparency = 0.5
+mesh = SubResource("PlaneMesh_yu0nn")
+
+[node name="InstantiaterNode" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.5, -11.359)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="InstantiaterNode"]
+mesh = SubResource("CylinderMesh_a0no5")
+
+[node name="NoteSpawnNode" type="Node3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+script = ExtResource("1_ae2ss")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NoteSpawnNode"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NoteSpawnNode/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_rm3mq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NoteSpawnNode/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.458334, 0)
+mesh = SubResource("BoxMesh_b5rly")
