@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cmw50nkjqecuy"]
 
-[ext_resource type="Script" path="res://SpawnNodes.gd" id="1_ae2ss"]
+[ext_resource type="Script" path="res://scripts/SpawnNodes.gd" id="1_ae2ss"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_yu0nn"]
 
@@ -12,10 +12,10 @@
 
 [node name="Node3D" type="Node3D"]
 
-[node name="PlaneNode" type="Node3D" parent="."]
+[node name="LevelNode" type="Node3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 
-[node name="PlaneMesh" type="MeshInstance3D" parent="PlaneNode"]
+[node name="PlaneMesh" type="MeshInstance3D" parent="LevelNode"]
 transparency = 0.5
 mesh = SubResource("PlaneMesh_yu0nn")
 
