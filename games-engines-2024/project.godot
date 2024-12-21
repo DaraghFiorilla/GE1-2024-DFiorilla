@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Games Engines 2024"
-run/main_scene="res://addons/xr-simulator/XRSimulator.tscn"
+run/main_scene="res://scenes/mainScene1.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://assets/icon.svg"
 
