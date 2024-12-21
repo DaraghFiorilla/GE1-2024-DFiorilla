@@ -1,8 +1,27 @@
-[gd_scene load_steps=6 format=3 uid="uid://cmw50nkjqecuy"]
+[gd_scene load_steps=13 format=3 uid="uid://cmw50nkjqecuy"]
 
 [ext_resource type="Script" path="res://scripts/SpawnNodes.gd" id="1_ae2ss"]
+[ext_resource type="Script" path="res://scripts/XR_Main.gd" id="1_w5yus"]
+[ext_resource type="PackedScene" uid="uid://bht7fcyac4rxk" path="res://scenes/xr_Player.tscn" id="3_r6mn1"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kgr8h"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_biwp4"]
+sky_material = SubResource("ProceduralSkyMaterial_kgr8h")
+
+[sub_resource type="Environment" id="Environment_e5x8w"]
+background_mode = 2
+sky = SubResource("Sky_biwp4")
+tonemap_mode = 2
+glow_enabled = true
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_yu0nn"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_qr13o"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_07cop"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_a0no5"]
 
@@ -11,6 +30,14 @@
 [sub_resource type="BoxMesh" id="BoxMesh_b5rly"]
 
 [node name="Node3D" type="Node3D"]
+script = ExtResource("1_w5yus")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_e5x8w")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
 
 [node name="LevelNode" type="Node3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
@@ -19,14 +46,23 @@ transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 transparency = 0.5
 mesh = SubResource("PlaneMesh_yu0nn")
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LevelNode"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.503, -1.343)
+mesh = SubResource("BoxMesh_qr13o")
+surface_material_override/0 = SubResource("StandardMaterial3D_07cop")
+
 [node name="InstantiaterNode" type="Node3D" parent="."]
+process_mode = 4
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.5, -11.359)
+visible = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="InstantiaterNode"]
 mesh = SubResource("CylinderMesh_a0no5")
 
 [node name="NoteSpawnNode" type="Node3D" parent="."]
+process_mode = 4
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+visible = false
 script = ExtResource("1_ae2ss")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="NoteSpawnNode"]
@@ -37,3 +73,8 @@ shape = SubResource("ConvexPolygonShape3D_rm3mq")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="NoteSpawnNode/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.458334, 0)
 mesh = SubResource("BoxMesh_b5rly")
+
+[node name="XROrigin3D" parent="." instance=ExtResource("3_r6mn1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[editable path="XROrigin3D"]

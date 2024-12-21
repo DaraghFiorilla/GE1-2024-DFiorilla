@@ -1,16 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://ctltchlf2j2r4"]
+[gd_scene load_steps=2 format=3 uid="uid://ctltchlf2j2r4"]
 
 [ext_resource type="Script" path="res://addons/xr-simulator/XRSimulator.gd" id="1_uljju"]
-[ext_resource type="PackedScene" uid="uid://cmw50nkjqecuy" path="res://scenes/mainScene1.tscn" id="2_84q6f"]
 
 [node name="XRSimulator" type="Node"]
 script = ExtResource("1_uljju")
 enabled = true
-
-[node name="XROrigin3D" type="XROrigin3D" parent="."]
-
-[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
-
-[node name="XRHandModifier3D" type="XRHandModifier3D" parent="XROrigin3D/XRCamera3D"]
-
-[node name="Node3D" parent="." instance=ExtResource("2_84q6f")]
