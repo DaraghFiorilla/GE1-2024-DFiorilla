@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://cmw50nkjqecuy"]
+[gd_scene load_steps=15 format=3 uid="uid://cmw50nkjqecuy"]
 
 [ext_resource type="Script" path="res://scripts/SpawnNodes.gd" id="1_ae2ss"]
 [ext_resource type="Script" path="res://scripts/XR_Main.gd" id="1_w5yus"]
 [ext_resource type="PackedScene" uid="uid://bht7fcyac4rxk" path="res://scenes/xr_Player.tscn" id="3_r6mn1"]
+[ext_resource type="Script" path="res://scenes/xrCameraMovement.gd" id="4_c8ffw"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kgr8h"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -18,6 +19,8 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_yu0nn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cjbes"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_qr13o"]
 
@@ -45,6 +48,11 @@ transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 [node name="PlaneMesh" type="MeshInstance3D" parent="LevelNode"]
 transparency = 0.5
 mesh = SubResource("PlaneMesh_yu0nn")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="LevelNode/PlaneMesh"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LevelNode/PlaneMesh/StaticBody3D"]
+shape = SubResource("BoxShape3D_cjbes")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="LevelNode"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.503, -1.343)
@@ -80,5 +88,6 @@ current = true
 
 [node name="XRCamera3D" parent="XROrigin3D" index="0"]
 environment = SubResource("Environment_e5x8w")
+script = ExtResource("4_c8ffw")
 
 [editable path="XROrigin3D"]

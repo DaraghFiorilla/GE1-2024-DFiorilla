@@ -11,9 +11,6 @@
 
 [node name="XROrigin3D" type="XROrigin3D"]
 
-[node name="XRCamera3D" type="XRCamera3D" parent="."]
-current = true
-
 [node name="Controller_Left" type="XRController3D" parent="."]
 tracker = &"left_hand"
 
@@ -37,3 +34,6 @@ turn_mode = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerBody"]
 shape = SubResource("CapsuleShape3D_wtyw4")
+
+[node name="XRCamera3D" type="XRCamera3D" parent="."]
+current = true
