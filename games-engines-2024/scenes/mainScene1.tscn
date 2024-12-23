@@ -2,12 +2,13 @@
 
 [ext_resource type="Script" path="res://scripts/SpawnNodes.gd" id="1_ae2ss"]
 [ext_resource type="Script" path="res://scripts/XR_Main.gd" id="1_w5yus"]
-[ext_resource type="Shader" uid="uid://rvwyfignj14l" path="res://assets/visualShaderSkybox.tres" id="2_forww"]
+[ext_resource type="Shader" uid="uid://b678emg40drcv" path="res://assets/visualShaderSkybox2.tres" id="2_rt1vr"]
 [ext_resource type="PackedScene" uid="uid://bht7fcyac4rxk" path="res://scenes/xr_Player.tscn" id="3_r6mn1"]
 [ext_resource type="Script" path="res://scenes/xrCameraMovement.gd" id="4_c8ffw"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_41h71"]
-shader = ExtResource("2_forww")
+shader = ExtResource("2_rt1vr")
+shader_parameter/ColorParameter2 = Color(0, 0.615686, 0, 1)
 shader_parameter/ZenithBlend = 2.0
 shader_parameter/SkyColor = Color(0, 0, 0, 1)
 shader_parameter/HorizonBlend = 50.0
@@ -21,6 +22,9 @@ sky_material = SubResource("ShaderMaterial_41h71")
 [sub_resource type="Environment" id="Environment_e5x8w"]
 background_mode = 2
 sky = SubResource("Sky_biwp4")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.35
 tonemap_mode = 2
 glow_enabled = true
 
@@ -53,7 +57,7 @@ transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 
 [node name="PlaneMesh" type="MeshInstance3D" parent="LevelNode"]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
-transparency = 0.5
+transparency = 1.0
 mesh = SubResource("PlaneMesh_yu0nn")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="LevelNode/PlaneMesh"]
