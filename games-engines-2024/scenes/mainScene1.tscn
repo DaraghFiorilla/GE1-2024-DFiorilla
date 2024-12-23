@@ -1,16 +1,22 @@
-[gd_scene load_steps=15 format=3 uid="uid://cmw50nkjqecuy"]
+[gd_scene load_steps=16 format=3 uid="uid://cmw50nkjqecuy"]
 
 [ext_resource type="Script" path="res://scripts/SpawnNodes.gd" id="1_ae2ss"]
 [ext_resource type="Script" path="res://scripts/XR_Main.gd" id="1_w5yus"]
+[ext_resource type="Shader" uid="uid://rvwyfignj14l" path="res://assets/visualShaderSkybox.tres" id="2_forww"]
 [ext_resource type="PackedScene" uid="uid://bht7fcyac4rxk" path="res://scenes/xr_Player.tscn" id="3_r6mn1"]
 [ext_resource type="Script" path="res://scenes/xrCameraMovement.gd" id="4_c8ffw"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kgr8h"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_41h71"]
+shader = ExtResource("2_forww")
+shader_parameter/ZenithBlend = 2.0
+shader_parameter/SkyColor = Color(0, 0, 0, 1)
+shader_parameter/HorizonBlend = 50.0
+shader_parameter/HorizonColor = Color(0, 0.145098, 0, 1)
+shader_parameter/NadirBlend = 2.0
+shader_parameter/GroundColor = Color(0, 0.035294, 0, 1)
 
 [sub_resource type="Sky" id="Sky_biwp4"]
-sky_material = SubResource("ProceduralSkyMaterial_kgr8h")
+sky_material = SubResource("ShaderMaterial_41h71")
 
 [sub_resource type="Environment" id="Environment_e5x8w"]
 background_mode = 2
@@ -46,6 +52,7 @@ shadow_enabled = true
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 
 [node name="PlaneMesh" type="MeshInstance3D" parent="LevelNode"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
 transparency = 0.5
 mesh = SubResource("PlaneMesh_yu0nn")
 
@@ -86,7 +93,7 @@ mesh = SubResource("BoxMesh_b5rly")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 current = true
 
-[node name="XRCamera3D" parent="XROrigin3D" index="0"]
+[node name="XRCamera3D" parent="XROrigin3D" index="3"]
 environment = SubResource("Environment_e5x8w")
 script = ExtResource("4_c8ffw")
 

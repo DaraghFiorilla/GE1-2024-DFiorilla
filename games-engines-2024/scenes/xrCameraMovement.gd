@@ -16,15 +16,7 @@ func _process(delta: float) -> void:
 @warning_ignore("unused_parameter")
 # Just to remind myself, this function works like _process but called at a fixed rate
 # This seems to work the same as FixedUpdate would in Unity
-# Camera controls in here
+# Camera controls if included in here
 func _physics_process(delta: float) -> void:
-	# Local variable for storing direction input
-	var direction = Vector3.ZERO
 	
-	if Input.is_action_pressed("primary"):
-		direction.x += 1
-	
-	if Input.is_action_pressed("secondary"):
-		direction.y += 1
 	pass
-	

@@ -7,5 +7,7 @@ func _ready() -> void:
 	
 	if xr_interface and xr_interface.is.initialized():
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-		
+		print("OpenXR initialized successfully")
 		get_viewport().use_xr = true
+	else:
+		print("OpenXR not initialized, check headset is working")
