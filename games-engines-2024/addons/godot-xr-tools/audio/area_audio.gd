@@ -14,7 +14,7 @@ extends AudioStreamPlayer3D
 ## XRToolsAreaAudioType to associate with this Area Audio
 @export var area_audio_type : XRToolsAreaAudioType
 
-@onready var area : Area3D = get_parent()
+@onready var area : Area3D = get_parent() as Area3D
 
 
 # Add support for is_class on XRTools classes
@@ -25,6 +25,8 @@ func is_xr_class(name : String) -> bool:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Listen for enter
+	if area == null:
+		print("ERROR: Parent of Area Audio is not an Area3D")
 	area.body_entered.connect(_on_body_entered)
 	# Listen for exit
 	area.body_exited.connect(_on_body_exited)

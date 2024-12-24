@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://rikajcdlwoe3"]
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_vruoj"]
+
+[node name="Generator" type="Node"]
+
+[node name="Player" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamGenerator_vruoj")
+
+[node name="CheckBox" type="CheckBox" parent="."]
+offset_right = 24.0
+offset_bottom = 24.0
+text = "Cause buffer underrun"

@@ -1,12 +1,15 @@
-[gd_scene load_steps=14 format=3 uid="uid://cmw50nkjqecuy"]
+[gd_scene load_steps=23 format=3 uid="uid://cmw50nkjqecuy"]
 
 [ext_resource type="Script" path="res://scripts/XR_Main.gd" id="1_w5yus"]
 [ext_resource type="Shader" uid="uid://b678emg40drcv" path="res://assets/visualShaderSkybox2.tres" id="2_rt1vr"]
 [ext_resource type="PackedScene" uid="uid://bht7fcyac4rxk" path="res://scenes/xr_Player.tscn" id="3_r6mn1"]
 [ext_resource type="Script" path="res://scripts/SpawnNodes.gd" id="4_i5pjf"]
-[ext_resource type="PackedScene" uid="uid://c44jeiin61qqv" path="res://scenes/noteBlueprint.tscn" id="5_2cqdf"]
+[ext_resource type="Script" path="res://scripts/handScore.gd" id="4_wbv1w"]
 [ext_resource type="PackedScene" uid="uid://bhhrir0lopkjd" path="res://scenes/noteSpawnNode.tscn" id="5_sfjsh"]
 [ext_resource type="Script" path="res://scripts/AudioGeneration.gd" id="7_8fyso"]
+[ext_resource type="Script" path="res://scripts/AudioGeneration2.gd" id="7_yu25y"]
+[ext_resource type="Script" path="res://addons/godot-xr-tools/audio/area_audio.gd" id="8_prjit"]
+[ext_resource type="Script" path="res://addons/godot-xr-tools/audio/area_audio_type.gd" id="9_d0xb7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_41h71"]
 shader = ExtResource("2_rt1vr")
@@ -31,6 +34,12 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_yu0nn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nh077"]
+size = Vector3(0.133736, 0.2034, 0.221024)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_upsym"]
+size = Vector3(0.133057, 0.205032, 0.222046)
 
 [sub_resource type="GDScript" id="GDScript_62161"]
 script/source = "extends XRCamera3D
@@ -60,6 +69,19 @@ func _physics_process(delta: float) -> void:
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ywtlf"]
 bg_color = Color(0.827451, 0, 0, 1)
 
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_s0pq2"]
+resource_local_to_scene = true
+buffer_length = 0.2
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mpt7e"]
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_o2a0k"]
+
+[sub_resource type="Resource" id="Resource_8mrem"]
+script = ExtResource("9_d0xb7")
+name = ""
+touch_sound = SubResource("AudioStreamGenerator_o2a0k")
+
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_w5yus")
 
@@ -82,13 +104,36 @@ mesh = SubResource("PlaneMesh_yu0nn")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 current = true
 
+[node name="Controller_Left" parent="XROrigin3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0515733, -0.248045, -0.35749)
+
+[node name="Area3D" type="Area3D" parent="XROrigin3D/Controller_Left/LeftHand" index="2" node_paths=PackedStringArray("healthNode") groups=["hand"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.484174, 0, -0.0259673)
+script = ExtResource("4_wbv1w")
+healthNode = NodePath("../../../PlayerBody/Player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/Controller_Left/LeftHand/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.503129, -0.0369415, 0.105498)
+shape = SubResource("BoxShape3D_nh077")
+
+[node name="Controller_Right" parent="XROrigin3D" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0688499, -0.248045, -0.35749)
+
+[node name="Area3D" type="Area3D" parent="XROrigin3D/Controller_Right/RightHand" index="2" node_paths=PackedStringArray("healthNode") groups=["hand"]]
+script = ExtResource("4_wbv1w")
+healthNode = NodePath("../../../PlayerBody/Player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/Controller_Right/RightHand/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0189209, -0.0374069, 0.079895)
+shape = SubResource("BoxShape3D_upsym")
+
 [node name="PlayerBody" parent="XROrigin3D" index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 axis_lock_linear_y = true
 
-[node name="Player" parent="XROrigin3D/PlayerBody" index="0" node_paths=PackedStringArray("healthBar")]
-maxHealth = 10
+[node name="Player" parent="XROrigin3D/PlayerBody" index="0" node_paths=PackedStringArray("healthBar", "scoreText")]
 healthBar = NodePath("../../../HealthBar")
+scoreText = NodePath("../../../RichTextLabel")
 
 [node name="XRCamera3D" parent="XROrigin3D" index="3"]
 environment = SubResource("Environment_e5x8w")
@@ -160,8 +205,9 @@ transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 6, 5, 45)
 [node name="NoteSpawner18" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
 transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 6, 10, 45)
 
-[node name="TestNote" parent="." instance=ExtResource("5_2cqdf")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.2655, -17.6617)
+[node name="Node" type="Node" parent="NoteSpawnNodes" node_paths=PackedStringArray("note_spawner")]
+script = ExtResource("7_8fyso")
+note_spawner = NodePath("..")
 
 [node name="HealthBar" type="ProgressBar" parent="."]
 modulate = Color(1, 0, 0, 1)
@@ -176,12 +222,33 @@ step = 1.0
 fill_mode = 3
 show_percentage = false
 
-[node name="AudioManager" type="Node" parent="." node_paths=PackedStringArray("note_spawner")]
-script = ExtResource("7_8fyso")
-note_spawner = NodePath("../NoteSpawnNodes")
+[node name="AudioManager" type="Node" parent="."]
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="AudioManager"]
+[node name="Area3D" type="Area3D" parent="AudioManager"]
+editor_description = "FOR THE BEAT ONLY"
+script = ExtResource("7_yu25y")
+generator = SubResource("AudioStreamGenerator_s0pq2")
 
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AudioManager/Area3D"]
+shape = SubResource("CapsuleShape3D_mpt7e")
+
+[node name="XRToolsAreaAudio" type="AudioStreamPlayer3D" parent="AudioManager/Area3D"]
+stream = SubResource("AudioStreamGenerator_s0pq2")
+volume_db = -5.0
+script = ExtResource("8_prjit")
+area_audio_type = SubResource("Resource_8mrem")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -217.0
+offset_bottom = 149.0
+grow_horizontal = 0
+text = "Score = "
+
+[connection signal="area_entered" from="XROrigin3D/Controller_Left/LeftHand/Area3D" to="XROrigin3D/Controller_Left/LeftHand/Area3D" method="_on_area_entered"]
+[connection signal="area_entered" from="XROrigin3D/Controller_Right/RightHand/Area3D" to="XROrigin3D/Controller_Right/RightHand/Area3D" method="_on_area_entered"]
 [connection signal="area_entered" from="XROrigin3D/PlayerBody/Player" to="XROrigin3D/PlayerBody/Player" method="_on_area_entered"]
 
 [editable path="XROrigin3D"]
@@ -206,4 +273,3 @@ note_spawner = NodePath("../NoteSpawnNodes")
 [editable path="NoteSpawnNodes/NoteSpawner16"]
 [editable path="NoteSpawnNodes/NoteSpawner17"]
 [editable path="NoteSpawnNodes/NoteSpawner18"]
-[editable path="TestNote"]

@@ -36,6 +36,7 @@ import/blender/enabled=false
 
 player="This goes on player only"
 note="For notes only"
+hand=""
 
 [input]
 

@@ -1,21 +1,41 @@
-[gd_scene load_steps=4 format=3 uid="uid://c44jeiin61qqv"]
+[gd_scene load_steps=10 format=3 uid="uid://c44jeiin61qqv"]
 
 [ext_resource type="Script" path="res://scripts/noteScript.gd" id="1_nyyk5"]
 [ext_resource type="PackedScene" uid="uid://c5rcq4jwa5r0m" path="res://assets/musical note.glb" id="2_wh3ty"]
+[ext_resource type="Script" path="res://addons/godot-xr-tools/audio/area_audio.gd" id="3_8jmum"]
+[ext_resource type="Script" path="res://scripts/AudioGen3.gd" id="3_66ly0"]
+[ext_resource type="Script" path="res://addons/godot-xr-tools/audio/area_audio_type.gd" id="4_mef24"]
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_wfwnr"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_y3rcv"]
 size = Vector3(2.95026, 4.72688, 0.825928)
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_je1o4"]
+buffer_length = 1.0
+
+[sub_resource type="Resource" id="Resource_w2r4u"]
+script = ExtResource("4_mef24")
+name = ""
+touch_sound = SubResource("AudioStreamGenerator_wfwnr")
 
 [node name="Node3D" type="Node3D"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 script = ExtResource("1_nyyk5")
 minSpeed = 7.0
-maxSpeed = 10.0
+maxSpeed = 13.0
 
 [node name="musical note" parent="." instance=ExtResource("2_wh3ty")]
 
 [node name="Area3D" type="Area3D" parent="musical note" groups=["note"]]
+script = ExtResource("3_66ly0")
+generator = SubResource("AudioStreamGenerator_wfwnr")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="musical note/Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0396423, -0.00261307, 0.41285)
 shape = SubResource("BoxShape3D_y3rcv")
+
+[node name="XRToolsAreaAudio" type="AudioStreamPlayer3D" parent="musical note/Area3D"]
+stream = SubResource("AudioStreamGenerator_je1o4")
+script = ExtResource("3_8jmum")
+area_audio_type = SubResource("Resource_w2r4u")

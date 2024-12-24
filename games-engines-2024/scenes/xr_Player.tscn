@@ -12,7 +12,7 @@
 
 [node name="XROrigin3D" type="XROrigin3D"]
 
-[node name="Controller_Left" type="XRController3D" parent="."]
+[node name="Controller_Left" type="XRController3D" parent="." groups=["hand"]]
 tracker = &"left_hand"
 
 [node name="LeftHand" parent="Controller_Left" instance=ExtResource("1_62y3d")]
@@ -21,7 +21,7 @@ tracker = &"left_hand"
 
 [node name="FunctionPickup" parent="Controller_Left" instance=ExtResource("3_m7an0")]
 
-[node name="Controller_Right" type="XRController3D" parent="."]
+[node name="Controller_Right" type="XRController3D" parent="." groups=["hand"]]
 tracker = &"right_hand"
 
 [node name="RightHand" parent="Controller_Right" instance=ExtResource("2_qjkem")]
@@ -35,6 +35,7 @@ turn_mode = 2
 
 [node name="Player" type="Area3D" parent="PlayerBody" groups=["player"]]
 script = ExtResource("7_meg7y")
+maxHealth = 30
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerBody/Player"]
 shape = SubResource("CapsuleShape3D_wtyw4")
