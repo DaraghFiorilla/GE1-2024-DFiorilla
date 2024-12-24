@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cmw50nkjqecuy"]
+[gd_scene load_steps=17 format=3 uid="uid://cmw50nkjqecuy"]
 
 [ext_resource type="Script" path="res://scripts/SpawnNodes.gd" id="1_ae2ss"]
 [ext_resource type="Script" path="res://scripts/XR_Main.gd" id="1_w5yus"]
@@ -42,6 +42,8 @@ glow_enabled = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_b5rly"]
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ebww8"]
+
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_w5yus")
 
@@ -66,7 +68,7 @@ mesh = SubResource("PlaneMesh_yu0nn")
 shape = SubResource("BoxShape3D_cjbes")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="LevelNode"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.503, -1.343)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.503, -15.4275)
 mesh = SubResource("BoxMesh_qr13o")
 surface_material_override/0 = SubResource("StandardMaterial3D_07cop")
 
@@ -94,8 +96,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.458334, 0)
 mesh = SubResource("BoxMesh_b5rly")
 
 [node name="XROrigin3D" parent="." instance=ExtResource("3_r6mn1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 current = true
+
+[node name="PlayerBody" parent="XROrigin3D" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+axis_lock_linear_y = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="XROrigin3D/PlayerBody/CollisionShape3D" index="0"]
+mesh = SubResource("CapsuleMesh_ebww8")
 
 [node name="XRCamera3D" parent="XROrigin3D" index="3"]
 environment = SubResource("Environment_e5x8w")

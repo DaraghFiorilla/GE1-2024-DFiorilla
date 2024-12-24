@@ -5,7 +5,7 @@ var xr_interface: XRInterface
 func _ready() -> void:
 	xr_interface = XRServer.find_interface("OpenXR")
 	
-	if xr_interface and xr_interface.is.initialized():
+	if xr_interface and xr_interface.is_initialized():
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		print("OpenXR initialized successfully")
 		get_viewport().use_xr = true
