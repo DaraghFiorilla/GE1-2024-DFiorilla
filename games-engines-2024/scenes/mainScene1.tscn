@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://cmw50nkjqecuy"]
+[gd_scene load_steps=13 format=3 uid="uid://cmw50nkjqecuy"]
 
 [ext_resource type="Script" path="res://scripts/XR_Main.gd" id="1_w5yus"]
-[ext_resource type="Script" path="res://scripts/playerHealth.gd" id="1_yth04"]
 [ext_resource type="Shader" uid="uid://b678emg40drcv" path="res://assets/visualShaderSkybox2.tres" id="2_rt1vr"]
 [ext_resource type="PackedScene" uid="uid://bht7fcyac4rxk" path="res://scenes/xr_Player.tscn" id="3_r6mn1"]
+[ext_resource type="Script" path="res://scripts/SpawnNodes.gd" id="4_i5pjf"]
+[ext_resource type="PackedScene" uid="uid://c44jeiin61qqv" path="res://scenes/noteBlueprint.tscn" id="5_2cqdf"]
 [ext_resource type="PackedScene" uid="uid://bhhrir0lopkjd" path="res://scenes/noteSpawnNode.tscn" id="5_sfjsh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_41h71"]
@@ -30,8 +31,6 @@ glow_enabled = true
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_yu0nn"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_ebww8"]
-
 [sub_resource type="GDScript" id="GDScript_62161"]
 script/source = "extends XRCamera3D
 
@@ -57,9 +56,8 @@ func _physics_process(delta: float) -> void:
 	pass
 "
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_rch2w"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_isgcx"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ywtlf"]
+bg_color = Color(0.827451, 0, 0, 1)
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_w5yus")
@@ -76,49 +74,131 @@ transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 
 [node name="PlaneMesh" type="MeshInstance3D" parent="LevelNode"]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
-transparency = 0.8
+transparency = 0.98
 mesh = SubResource("PlaneMesh_yu0nn")
 
 [node name="XROrigin3D" parent="." instance=ExtResource("3_r6mn1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 current = true
 
 [node name="PlayerBody" parent="XROrigin3D" index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 axis_lock_linear_y = true
 
-[node name="Area3D" parent="XROrigin3D/PlayerBody" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0033884, -0.0181026, 0.000481844)
-script = ExtResource("1_yth04")
-
-[node name="XROrigin3D_PlayerBody_CollisionShape3D#MeshInstance3D" type="MeshInstance3D" parent="XROrigin3D/PlayerBody/Area3D/CollisionShape3D" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0033884, 0.0181026, -0.000481844)
-visible = false
-mesh = SubResource("CapsuleMesh_ebww8")
-skeleton = NodePath("../../../../..")
+[node name="Player" parent="XROrigin3D/PlayerBody" index="0" node_paths=PackedStringArray("healthBar")]
+maxHealth = 10
+healthBar = NodePath("../../../HealthBar")
 
 [node name="XRCamera3D" parent="XROrigin3D" index="3"]
 environment = SubResource("Environment_e5x8w")
 script = SubResource("GDScript_62161")
 
 [node name="NoteSpawnNodes" type="Node3D" parent="."]
-transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0, 1, -20)
+transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0, 2, -32.838)
+script = ExtResource("4_i5pjf")
 
-[node name="Node3D" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
-noteLetter = null
-noteNumber = null
+[node name="NoteSpawner" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
 
-[node name="collision test" type="Area3D" parent="." groups=["note"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.115831, 1.49929, -0.715002)
-input_capture_on_drag = true
+[node name="NoteSpawner6" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="collision test"]
-shape = SubResource("BoxShape3D_rch2w")
+[node name="NoteSpawner15" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="collision test/CollisionShape3D"]
-mesh = SubResource("BoxMesh_isgcx")
+[node name="NoteSpawner2" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.866026, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866026, 2, 0, 15)
 
-[connection signal="area_entered" from="XROrigin3D/PlayerBody/Area3D" to="." method="_on_area_3d_area_entered"]
+[node name="NoteSpawner7" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.866026, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866026, 2, 5, 15)
+
+[node name="NoteSpawner14" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.866026, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866026, 2, 10, 15)
+
+[node name="NoteSpawner3" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.866026, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866026, 2, 0, -15)
+
+[node name="NoteSpawner8" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.866026, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866026, 2, 5, -15)
+
+[node name="NoteSpawner13" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.866026, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866026, 2, 10, -15)
+
+[node name="NoteSpawner4" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.707106, 0, -0.707106, 0, 1, 0, 0.707106, 0, 0.707106, 4, 0, -30)
+
+[node name="NoteSpawner9" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.707106, 0, -0.707106, 0, 1, 0, 0.707106, 0, 0.707106, 4, 5, -30)
+
+[node name="NoteSpawner12" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.707106, 0, -0.707106, 0, 1, 0, 0.707106, 0, 0.707106, 4, 10, -30)
+
+[node name="NoteSpawner19" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 6, 0, -45)
+
+[node name="NoteSpawner20" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 6, 5, -45)
+
+[node name="NoteSpawner21" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 6, 10, -45)
+
+[node name="NoteSpawner5" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.707106, 0, 0.707106, 0, 1, 0, -0.707106, 0, 0.707106, 4, 0, 30)
+
+[node name="NoteSpawner10" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.707106, 0, 0.707106, 0, 1, 0, -0.707106, 0, 0.707106, 4, 5, 30)
+
+[node name="NoteSpawner11" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.707106, 0, 0.707106, 0, 1, 0, -0.707106, 0, 0.707106, 4, 10, 30)
+
+[node name="NoteSpawner16" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 6, 0, 45)
+
+[node name="NoteSpawner17" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 6, 5, 45)
+
+[node name="NoteSpawner18" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 6, 10, 45)
+
+[node name="TestNote" parent="." instance=ExtResource("5_2cqdf")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.2655, -17.6617)
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+modulate = Color(1, 0, 0, 1)
+self_modulate = Color(1, 0, 0, 1)
+top_level = true
+offset_left = 26.0
+offset_top = 37.0
+offset_right = 65.0
+offset_bottom = 621.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_ywtlf")
+step = 1.0
+fill_mode = 3
+show_percentage = false
+
+[node name="AudioManager" type="Node" parent="."]
+
+[connection signal="area_entered" from="XROrigin3D/PlayerBody/Player" to="XROrigin3D/PlayerBody/Player" method="_on_area_entered"]
 
 [editable path="XROrigin3D"]
-[editable path="NoteSpawnNodes/Node3D"]
+[editable path="NoteSpawnNodes/NoteSpawner"]
+[editable path="NoteSpawnNodes/NoteSpawner6"]
+[editable path="NoteSpawnNodes/NoteSpawner15"]
+[editable path="NoteSpawnNodes/NoteSpawner2"]
+[editable path="NoteSpawnNodes/NoteSpawner7"]
+[editable path="NoteSpawnNodes/NoteSpawner14"]
+[editable path="NoteSpawnNodes/NoteSpawner3"]
+[editable path="NoteSpawnNodes/NoteSpawner8"]
+[editable path="NoteSpawnNodes/NoteSpawner13"]
+[editable path="NoteSpawnNodes/NoteSpawner4"]
+[editable path="NoteSpawnNodes/NoteSpawner9"]
+[editable path="NoteSpawnNodes/NoteSpawner12"]
+[editable path="NoteSpawnNodes/NoteSpawner19"]
+[editable path="NoteSpawnNodes/NoteSpawner20"]
+[editable path="NoteSpawnNodes/NoteSpawner21"]
+[editable path="NoteSpawnNodes/NoteSpawner5"]
+[editable path="NoteSpawnNodes/NoteSpawner10"]
+[editable path="NoteSpawnNodes/NoteSpawner11"]
+[editable path="NoteSpawnNodes/NoteSpawner16"]
+[editable path="NoteSpawnNodes/NoteSpawner17"]
+[editable path="NoteSpawnNodes/NoteSpawner18"]
+[editable path="TestNote"]

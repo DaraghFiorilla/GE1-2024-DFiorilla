@@ -1,11 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://c44jeiin61qqv"]
+[gd_scene load_steps=4 format=3 uid="uid://c44jeiin61qqv"]
 
+[ext_resource type="Script" path="res://scripts/noteScript.gd" id="1_nyyk5"]
 [ext_resource type="PackedScene" uid="uid://c5rcq4jwa5r0m" path="res://assets/musical note.glb" id="2_wh3ty"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_y3rcv"]
 size = Vector3(2.95026, 4.72688, 0.825928)
 
 [node name="Node3D" type="Node3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+script = ExtResource("1_nyyk5")
+minSpeed = 7.0
+maxSpeed = 10.0
 
 [node name="musical note" parent="." instance=ExtResource("2_wh3ty")]
 
