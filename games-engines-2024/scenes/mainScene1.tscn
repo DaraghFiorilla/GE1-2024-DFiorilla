@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cmw50nkjqecuy"]
+[gd_scene load_steps=14 format=3 uid="uid://cmw50nkjqecuy"]
 
 [ext_resource type="Script" path="res://scripts/XR_Main.gd" id="1_w5yus"]
 [ext_resource type="Shader" uid="uid://b678emg40drcv" path="res://assets/visualShaderSkybox2.tres" id="2_rt1vr"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/SpawnNodes.gd" id="4_i5pjf"]
 [ext_resource type="PackedScene" uid="uid://c44jeiin61qqv" path="res://scenes/noteBlueprint.tscn" id="5_2cqdf"]
 [ext_resource type="PackedScene" uid="uid://bhhrir0lopkjd" path="res://scenes/noteSpawnNode.tscn" id="5_sfjsh"]
+[ext_resource type="Script" path="res://scripts/AudioGeneration.gd" id="7_8fyso"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_41h71"]
 shader = ExtResource("2_rt1vr")
@@ -175,7 +176,11 @@ step = 1.0
 fill_mode = 3
 show_percentage = false
 
-[node name="AudioManager" type="Node" parent="."]
+[node name="AudioManager" type="Node" parent="." node_paths=PackedStringArray("note_spawner")]
+script = ExtResource("7_8fyso")
+note_spawner = NodePath("../NoteSpawnNodes")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="AudioManager"]
 
 [connection signal="area_entered" from="XROrigin3D/PlayerBody/Player" to="XROrigin3D/PlayerBody/Player" method="_on_area_entered"]
 

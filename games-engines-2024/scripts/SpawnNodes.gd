@@ -9,25 +9,29 @@ var spawners_array: Array
 func _ready() -> void:
 	spawners_array = get_children()
 	print(spawners_array)
-	spawn_note()
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 @warning_ignore("unused_parameter")
 func _process(delta: float) -> void:
-	
 	pass
 
-func spawn_note():
+func spawn_note(note: AudioStream):
 	if (player.playerAlive):
 		print("Player alive, spawning note")
 		# Select random spawner
-		var rng = RandomNumberGenerator.new()
-		var random_index = int(rng.randf_range(0, spawners_array.size()-1))
-		var random_spawner = spawners_array[random_index]
+		var random_spawner = get_random_spawner()
 		# Instantiate note
 		var note_instance = noteBlueprint.instantiate()
 		random_spawner.add_child(note_instance)
+		var xr_audio_player = note_instance.get_node("XRToolsAreaAudio")
 		note_instance.global_position = random_spawner.global_position + random_spawner.transform.basis.z.normalized() * 0.3
 		
+	pass
+
+func get_random_spawner():
+	var rng = RandomNumberGenerator.new()
+	var random_index = int(rng.randf_range(0, spawners_array.size()-1))
+	var new_random_spawner = spawners_array[random_index]
+	return new_random_spawner
 	pass

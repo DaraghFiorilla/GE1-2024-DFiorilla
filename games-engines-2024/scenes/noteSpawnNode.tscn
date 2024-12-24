@@ -1,9 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://bhhrir0lopkjd"]
+[gd_scene load_steps=6 format=3 uid="uid://bhhrir0lopkjd"]
 
 [ext_resource type="PackedScene" uid="uid://yn71takkv0i5" path="res://assets/boxNodeColored.glb" id="2_6ocf3"]
+[ext_resource type="Script" path="res://addons/godot-xr-tools/audio/area_audio.gd" id="2_177xw"]
+[ext_resource type="Script" path="res://addons/godot-xr-tools/audio/area_audio_type.gd" id="3_1rxua"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qgblb"]
 size = Vector3(2.0116, 2.0033, 2.00684)
+
+[sub_resource type="Resource" id="Resource_ufnyx"]
+script = ExtResource("3_1rxua")
+name = ""
 
 [node name="NoteSpawner" type="Node3D"]
 
@@ -15,3 +21,7 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="boxNodeColored/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000549316, -0.00335693, -0.00146484)
 shape = SubResource("BoxShape3D_qgblb")
+
+[node name="XRToolsAreaAudio" type="AudioStreamPlayer3D" parent="."]
+script = ExtResource("2_177xw")
+area_audio_type = SubResource("Resource_ufnyx")
