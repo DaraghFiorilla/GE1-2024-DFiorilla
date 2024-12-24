@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bht7fcyac4rxk"]
+[gd_scene load_steps=9 format=3 uid="uid://bht7fcyac4rxk"]
 
 [ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="1_62y3d"]
 [ext_resource type="PackedScene" uid="uid://l2n30mpbkdyw" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_hand_low.tscn" id="2_qjkem"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="3_hekp7"]
 [ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="3_m7an0"]
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="5_paxbi"]
+[ext_resource type="Script" path="res://scripts/playerHealth.gd" id="7_meg7y"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wtyw4"]
 
@@ -32,9 +33,10 @@ turn_mode = 2
 
 [node name="PlayerBody" parent="." instance=ExtResource("3_hekp7")]
 
-[node name="Area3D" type="Area3D" parent="PlayerBody"]
+[node name="Player" type="Area3D" parent="PlayerBody" groups=["player"]]
+script = ExtResource("7_meg7y")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerBody/Area3D" groups=["player"]]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerBody/Player"]
 shape = SubResource("CapsuleShape3D_wtyw4")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="."]

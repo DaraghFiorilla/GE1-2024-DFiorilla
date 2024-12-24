@@ -1,10 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://cmw50nkjqecuy"]
+[gd_scene load_steps=14 format=3 uid="uid://cmw50nkjqecuy"]
 
-[ext_resource type="Script" path="res://scripts/SpawnNodes.gd" id="1_ae2ss"]
 [ext_resource type="Script" path="res://scripts/XR_Main.gd" id="1_w5yus"]
+[ext_resource type="Script" path="res://scripts/playerHealth.gd" id="1_yth04"]
 [ext_resource type="Shader" uid="uid://b678emg40drcv" path="res://assets/visualShaderSkybox2.tres" id="2_rt1vr"]
 [ext_resource type="PackedScene" uid="uid://bht7fcyac4rxk" path="res://scenes/xr_Player.tscn" id="3_r6mn1"]
-[ext_resource type="Script" path="res://scenes/xrCameraMovement.gd" id="4_c8ffw"]
+[ext_resource type="PackedScene" uid="uid://bhhrir0lopkjd" path="res://scenes/noteSpawnNode.tscn" id="5_sfjsh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_41h71"]
 shader = ExtResource("2_rt1vr")
@@ -30,19 +30,36 @@ glow_enabled = true
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_yu0nn"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_cjbes"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_qr13o"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_07cop"]
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_a0no5"]
-
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_rm3mq"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_b5rly"]
-
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_ebww8"]
+
+[sub_resource type="GDScript" id="GDScript_62161"]
+script/source = "extends XRCamera3D
+
+#@export var speed := 7.0
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+ # dont need warning for unused params in process funcs
+func _process(delta: float) -> void:
+	pass
+
+@warning_ignore(\"unused_parameter\")
+# Just to remind myself, this function works like _process but called at a fixed rate
+# This seems to work the same as FixedUpdate would in Unity
+# Camera controls if included in here
+func _physics_process(delta: float) -> void:
+	
+	pass
+"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rch2w"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_isgcx"]
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_w5yus")
@@ -59,41 +76,8 @@ transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 
 [node name="PlaneMesh" type="MeshInstance3D" parent="LevelNode"]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
-transparency = 1.0
+transparency = 0.8
 mesh = SubResource("PlaneMesh_yu0nn")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="LevelNode/PlaneMesh"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="LevelNode/PlaneMesh/StaticBody3D"]
-shape = SubResource("BoxShape3D_cjbes")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="LevelNode"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.503, -15.4275)
-mesh = SubResource("BoxMesh_qr13o")
-surface_material_override/0 = SubResource("StandardMaterial3D_07cop")
-
-[node name="InstantiaterNode" type="Node3D" parent="."]
-process_mode = 4
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.5, -11.359)
-visible = false
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="InstantiaterNode"]
-mesh = SubResource("CylinderMesh_a0no5")
-
-[node name="NoteSpawnNode" type="Node3D" parent="."]
-process_mode = 4
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-visible = false
-script = ExtResource("1_ae2ss")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="NoteSpawnNode"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NoteSpawnNode/StaticBody3D"]
-shape = SubResource("ConvexPolygonShape3D_rm3mq")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="NoteSpawnNode/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.458334, 0)
-mesh = SubResource("BoxMesh_b5rly")
 
 [node name="XROrigin3D" parent="." instance=ExtResource("3_r6mn1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -103,11 +87,38 @@ current = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 axis_lock_linear_y = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="XROrigin3D/PlayerBody/CollisionShape3D" index="0"]
+[node name="Area3D" parent="XROrigin3D/PlayerBody" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0033884, -0.0181026, 0.000481844)
+script = ExtResource("1_yth04")
+
+[node name="XROrigin3D_PlayerBody_CollisionShape3D#MeshInstance3D" type="MeshInstance3D" parent="XROrigin3D/PlayerBody/Area3D/CollisionShape3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0033884, 0.0181026, -0.000481844)
+visible = false
 mesh = SubResource("CapsuleMesh_ebww8")
+skeleton = NodePath("../../../../..")
 
 [node name="XRCamera3D" parent="XROrigin3D" index="3"]
 environment = SubResource("Environment_e5x8w")
-script = ExtResource("4_c8ffw")
+script = SubResource("GDScript_62161")
+
+[node name="NoteSpawnNodes" type="Node3D" parent="."]
+transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0, 1, -20)
+
+[node name="Node3D" parent="NoteSpawnNodes" instance=ExtResource("5_sfjsh")]
+noteLetter = null
+noteNumber = null
+
+[node name="collision test" type="Area3D" parent="." groups=["note"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.115831, 1.49929, -0.715002)
+input_capture_on_drag = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="collision test"]
+shape = SubResource("BoxShape3D_rch2w")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="collision test/CollisionShape3D"]
+mesh = SubResource("BoxMesh_isgcx")
+
+[connection signal="area_entered" from="XROrigin3D/PlayerBody/Area3D" to="." method="_on_area_3d_area_entered"]
 
 [editable path="XROrigin3D"]
+[editable path="NoteSpawnNodes/Node3D"]

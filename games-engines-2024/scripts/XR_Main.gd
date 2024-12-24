@@ -11,3 +11,4 @@ func _ready() -> void:
 		get_viewport().use_xr = true
 	else:
 		print("OpenXR not initialized, check headset is working")
+	pass # Replace with function body.
